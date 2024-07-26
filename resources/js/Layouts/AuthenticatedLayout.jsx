@@ -33,6 +33,14 @@ export default function Authenticated({ user, header, children }) {
                                     Menu
                                 </NavLink>
 
+                                <NavLink href={route('pages.create')} active={route().current('/pages/create')}>
+                                    Create A Post
+                                </NavLink>
+                                
+                                <NavLink href={route('pages.index')} active={route().current('/pages/index')}>
+                                    Home Page
+                                </NavLink>
+                                    
                             </div>
                         </div>
 

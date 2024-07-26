@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\PageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
 });
 
+Route::middleware('auth')->group(function () {
+    // Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
+    // Route::get('/pages/create', [PageController::class, 'create'])->name('pages.create');
+    // Route::post('/pages', [PageController::class, 'store'])->name('pages.store');
+    // Route::get('/pages/{id}/edit', [PageController::class, 'edit'])->name('pages.edit');
+    // Route::put('/pages/{id}', [PageController::class, 'update'])->name('pages.update');
+    // Route::delete('/pages/{id}', [PageController::class, 'destroy'])->name('pages.destroy');
+    Route::resource('pages', PageController::class);
+});
 
 
 require __DIR__.'/auth.php';
