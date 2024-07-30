@@ -38,7 +38,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                                 
                                 <NavLink href={route('pages.index')} active={route().current('/pages/index')}>
-                                    Home Page
+                                    Posts
                                 </NavLink>
                                     
                             </div>

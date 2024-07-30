@@ -26,7 +26,7 @@ const Index = () => {
     return (
         <MainLayout>
             <div className="max-w-4xl mx-auto py-10">
-            <h1 className="text-2xl font-bold mb-6">Pages</h1>
+            <h1 className="text-2xl font-bold mb-6">Posts</h1>
             <Link href={route('pages.create')} className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mb-4">Create New Page</Link>
             <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">

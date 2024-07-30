@@ -1,6 +1,8 @@
 import React from 'react';
 import { useForm } from '@inertiajs/react';
-import MainLayout from '@/Layouts/MainLayout'; // This should be correct if the alias is properly configured
+import MainLayout from '@/Layouts/MainLayout'; 
+import Quill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; 
 
 const Create = () => {
     const { data, setData, post, errors } = useForm({
@@ -30,11 +32,18 @@ const Create = () => {
                     </div>
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700">Content</label>
-                        <textarea
+
+                        <Quill
+                        value={data.content}
+                        onChange={(value) => setData('content', value)}
+                         />
+
+                        {/* <textarea
                             value={data.content}
                             onChange={(e) => setData('content', e.target.value)}
                             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                        ></textarea>
+                        ></textarea> */}
+                        
                         {errors.content && <span className="text-red-500 text-sm">{errors.content}</span>}
                     </div>
                     <button

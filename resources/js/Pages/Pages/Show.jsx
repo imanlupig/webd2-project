@@ -17,3 +17,4 @@ const Show = ({ page }) => {
 };
 
 export default Show;
+
