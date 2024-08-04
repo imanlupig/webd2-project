@@ -94,7 +94,20 @@ class PageController extends Controller
 
     public function guestShow(Page $page)
     {
-        return inertia('Guest/Pages/Show', ['page' => $page]);
+        $comments = $page->comments()->orderBy('created_at', 'desc')->get();
+        return inertia('Guest/Pages/Show', ['page' => $page, 'comments' => $comments]);
+    }
+
+    public function storeComment(Request $request, Page $page)
+    {
+        $validated = $request->validate([
+            'name' => 'nullable|string|max:255',
+            'content' => 'required|string',
+        ]);
+
+        $page->comments()->create($validated);
+
+        return redirect()->route('guest.pages.show', $page);
     }
 
 }

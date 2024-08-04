@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,8 +48,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('pages', PageController::class);
 });
 
-Route::get('/guest/pages', [PageController::class, 'guestIndex'])->name('guest.pages.index');
+Route::get('/', [PageController::class, 'guestIndex'])->name('guest.pages.index');
 Route::get('/guest/pages/{page}', [PageController::class, 'guestShow'])->name('guest.pages.show');
+Route::post('/pages/{page}/comments', [CommentController::class, 'store'])->name('comments.store');
+
 
 
 require __DIR__.'/auth.php';
