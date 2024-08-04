@@ -15,6 +15,20 @@ const Edit = () => {
         put(route('pages.update', page.id));
     };
 
+    const modules = {
+        toolbar: [
+            [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+            [{size: []}],
+            ['bold', 'italic', 'underline', 'strike'],
+            ['clean'] // Adding the clean button to remove formatting
+        ],
+    };
+
+    const formats = [
+        'header', 'font', 'size',
+        'bold', 'italic', 'underline', 'strike'
+    ];
+
     return (
         <div className="max-w-4xl mx-auto py-10">
             <h1 className="text-2xl font-bold mb-6">Edit Page</h1>
@@ -34,7 +48,9 @@ const Edit = () => {
                     <Quill
                         value={data.content}
                         onChange={(value) => setData('content', value)}
-                    />
+                        modules={modules}
+                        formats={formats}
+                         />
                     {errors.content && <div className="text-red-600">{errors.content}</div>}
                 </div>
                 <button

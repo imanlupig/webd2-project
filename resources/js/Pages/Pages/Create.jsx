@@ -15,6 +15,20 @@ const Create = () => {
         post(route('pages.store'));
     };
 
+    const modules = {
+        toolbar: [
+            [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+            [{size: []}],
+            ['bold', 'italic', 'underline', 'strike'],
+            ['clean'] // Adding the clean button to remove formatting
+        ],
+    };
+
+    const formats = [
+        'header', 'font', 'size',
+        'bold', 'italic', 'underline', 'strike'
+    ];
+
     return (
         <MainLayout>
             <div className="max-w-4xl mx-auto py-10">
@@ -36,6 +50,8 @@ const Create = () => {
                         <Quill
                         value={data.content}
                         onChange={(value) => setData('content', value)}
+                        modules={modules}
+                        formats={formats}
                          />
 
                         {/* <textarea

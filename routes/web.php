@@ -44,14 +44,11 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    // Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
-    // Route::get('/pages/create', [PageController::class, 'create'])->name('pages.create');
-    // Route::post('/pages', [PageController::class, 'store'])->name('pages.store');
-    // Route::get('/pages/{id}/edit', [PageController::class, 'edit'])->name('pages.edit');
-    // Route::put('/pages/{id}', [PageController::class, 'update'])->name('pages.update');
-    // Route::delete('/pages/{id}', [PageController::class, 'destroy'])->name('pages.destroy');
     Route::resource('pages', PageController::class);
 });
+
+Route::get('/guest/pages', [PageController::class, 'guestIndex'])->name('guest.pages.index');
+Route::get('/guest/pages/{page}', [PageController::class, 'guestShow'])->name('guest.pages.show');
 
 
 require __DIR__.'/auth.php';
