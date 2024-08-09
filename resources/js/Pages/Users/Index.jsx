@@ -39,22 +39,22 @@ const UserIndex = () => {
                         <thead className="table-dark">
                             <tr>
                                 <th>
-                                    <button className="btn btn-link" onClick={() => handleSortChange('name')}>
+                                    <button onClick={() => handleSortChange('name')}>
                                         Name {sortBy === 'name' && (order === 'asc' ? '↑' : '↓')}
                                     </button>
                                 </th>
                                 <th>
-                                    <button className="btn btn-link" onClick={() => handleSortChange('email')}>
+                                    <button onClick={() => handleSortChange('email')}>
                                         Email {sortBy === 'email' && (order === 'asc' ? '↑' : '↓')}
                                     </button>
                                 </th>
                                 <th>
-                                    <button className="btn btn-link" onClick={() => handleSortChange('created_at')}>
+                                    <button onClick={() => handleSortChange('created_at')}>
                                         Created At {sortBy === 'created_at' && (order === 'asc' ? '↑' : '↓')}
                                     </button>
                                 </th>
                                 <th>
-                                    <button className="btn btn-link" onClick={() => handleSortChange('updated_at')}>
+                                    <button onClick={() => handleSortChange('updated_at')}>
                                         Updated At {sortBy === 'updated_at' && (order === 'asc' ? '↑' : '↓')}
                                     </button>
                                 </th>

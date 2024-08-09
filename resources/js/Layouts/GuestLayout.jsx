@@ -4,13 +4,37 @@ import { Link } from '@inertiajs/react';
 const GuestLayout = ({ children }) => {
     return (
         <div>
-            <nav className="bg-gray-800 p-4">
+            <nav style={{ backgroundColor: '#FFFDD0' }} className="p-4 shadow-md">
                 <div className="max-w-7xl mx-auto flex justify-between items-center">
-                    <div className="text-white text-lg font-bold"><Link href={route('guest.pages.index')}>Kape Guest</Link></div>
-                    <div>
-                        <Link href="/login" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</Link>
-                        <Link href="/register" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Register</Link>
-                        <Link href="/menu" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Menu</Link>
+                    <Link href="/">
+                        <img 
+                            src='/storage/images/Logo.png'
+                            alt="Logo" 
+                            className="h-8 w-auto object-contain" 
+                        />
+                    </Link>
+                    <div className="flex space-x-4">
+                        <Link 
+                            href="/login" 
+                            className="text-brown-700 hover:bg-brown-200 hover:text-brown-900 px-3 py-2 rounded-md text-sm font-medium"
+                            style={{ textDecoration: 'none', color: 'brown' }} 
+                        >
+                            Login
+                        </Link>
+                        <Link 
+                            href="/register" 
+                            className="text-brown-700 hover:bg-brown-200 hover:text-brown-900 px-3 py-2 rounded-md text-sm font-medium"
+                            style={{ textDecoration: 'none', color: 'brown' }} 
+                        >
+                            Register
+                        </Link>
+                        <Link 
+                            href="/menu" 
+                            className="text-brown-700 hover:bg-brown-200 hover:text-brown-900 px-3 py-2 rounded-md text-sm font-medium"
+                            style={{ textDecoration: 'none', color: 'brown' }} 
+                        >
+                            Menu
+                        </Link>
                     </div>
                 </div>
             </nav>

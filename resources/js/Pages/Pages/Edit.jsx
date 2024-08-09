@@ -32,34 +32,35 @@ const Edit = () => {
 
     return (
         <MainLayout>
-            <div className="max-w-4xl mx-auto py-10">
-                <h1 className="text-2xl font-bold mb-6">Edit Page</h1>
+            <div className="container mt-5">
+                <h1 className="text-3xl font-bold mb-6">Edit Page</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Title</label>
+                        <label className="block text-sm font-medium text-brown-700">Title</label>
                         <input
                             type="text"
                             value={data.title}
                             onChange={(e) => setData('title', e.target.value)}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+                            className="mt-1 block w-full border border-brown-300 rounded-md shadow-sm p-2"
                         />
-                        {errors.title && <div className="text-red-600">{errors.title}</div>}
+                        {errors.title && <div className="text-red-600 mt-1">{errors.title}</div>}
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Content</label>
+                    <div className="mb-6">
+                        <label className="block text-sm font-medium text-brown-700">Content</label>
                         <Quill
                             value={data.content}
                             onChange={(value) => setData('content', value)}
                             modules={modules}
                             formats={formats}
+                           className="quill-editor"
                         />
-                        {errors.content && <div className="text-red-600">{errors.content}</div>}
+                        {errors.content && <div className="text-red-600 mt-1">{errors.content}</div>}
                     </div>
                     
                     <button
                         type="submit"
                         disabled={processing}
-                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="inline-flex items-center px-4 py-2 border border-light-brown text-sm font-medium rounded-md text-light-brown bg-white hover:bg-light-brown hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-light-brown"
                     >
                         Save
                     </button>

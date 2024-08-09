@@ -16,8 +16,13 @@ export default function Authenticated({ user, header, children }) {
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+                                    <img 
+                                        src='/storage/images/Logo.png'
+                                        alt="Logo" 
+                                        className="h-8 w-auto object-contain" 
+                                    />
                                 </Link>
+
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -31,10 +36,6 @@ export default function Authenticated({ user, header, children }) {
 
                                 <NavLink href={route('menu.index')} active={route().current('/menu')}>
                                     Menu
-                                </NavLink>
-
-                                <NavLink href={route('pages.create')} active={route().current('/pages/create')}>
-                                    Create A Post
                                 </NavLink>
                                 
                                 <NavLink href={route('pages.index')} active={route().current('/pages/index')}>

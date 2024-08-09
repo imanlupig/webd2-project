@@ -26,7 +26,10 @@ const Index = () => {
                                     <td className="px-6 py-4 whitespace-nowrap">{new Date(page.created_at).toLocaleDateString()}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{new Date(page.updated_at).toLocaleDateString()}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <Link href={route('guest.pages.show', page.id)} className="text-indigo-600 hover:text-indigo-900">View</Link>
+                                        <Link href={route('guest.pages.show', page.id)} className="text-indigo-600 hover:text-indigo-900"
+                                        style={{ textDecoration: 'none', color: 'brown' }} >
+                                        View
+                                        </Link>
                                     </td>
                                 </tr>
                             ))}

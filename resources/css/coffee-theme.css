@@ -1,0 +1,75 @@
+:root {
+    --coffee-brown: #6f4f28;
+    --cream: #f5f5dc; 
+    --dark-brown: #3e2723; 
+    --light-brown: #a1887f; 
+    --coffee-highlight: #d7ccc8; 
+}
+
+body {
+    background-color: var(--cream);
+    color: var(--dark-brown);
+}
+
+.white-font{
+    color: var(--cream)
+}
+
+.table {
+    background-color: var(--cream);
+    color: var(--dark-brown);
+}
+
+.table-dark thead {
+    background-color: var(--coffee-brown);
+    color: var(--cream);
+}
+
+.table thead th {
+    color: var(--coffee-highlight);
+}
+
+.btn-primary {
+    background-color: var(--coffee-brown);
+    border-color: var(--coffee-brown);
+}
+
+.btn-primary:hover {
+    background-color: var(--dark-brown);
+    border-color: var(--dark-brown);
+}
+
+.btn-warning {
+    background-color: var(--light-brown);
+    border-color: var(--light-brown);
+}
+
+.btn-warning:hover {
+    background-color: var(--coffee-brown);
+    border-color: var(--coffee-brown);
+}
+
+.btn-danger {
+    background-color: var(--dark-brown);
+    border-color: var(--dark-brown);
+}
+
+.btn-danger:hover {
+    background-color: var(--coffee-brown);
+    border-color: var(--coffee-brown);
+}
+
+.quill-editor .ql-container {
+    background-color: #ffffff; 
+    border: 1px solid var(--light-brown); 
+    border-radius: 0.375rem; 
+}
+
+.quill-editor .ql-editor {
+    min-height: 200px; 
+    padding: 0.5rem; 
+}
+
+.quill-editor .ql-toolbar {
+    border-bottom: 1px solid var(--light-brown); 
+}

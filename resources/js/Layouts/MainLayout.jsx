@@ -4,20 +4,23 @@ import { Link } from '@inertiajs/react';
 const MainLayout = ({ children }) => {
     return (
         <div>
-            <header className="bg-gray-800 p-4">
+            <header className="bg-light p-4 shadow-sm">
                 <div className="container mx-auto">
-                    <nav className="flex justify-between items-center">
+                    <nav className="d-flex justify-content-between align-items-center">
                         <div>
-                            <Link href="/dashboard" className="text-white text-xl font-semibold">Kape Admin</Link>
+                            <Link href="/">
+                                <img 
+                                    src='/storage/images/Logo.png'
+                                    alt="Logo" 
+                                    className="h-8 w-auto object-contain" 
+                                />
+                            </Link>
                         </div>
                         <div>
-                            <Link href="/pages" className="text-white">Posts</Link>
-                            <br/>
-                            <Link href="/menu" className="text-white">Menu</Link>
-                            <br/>
-                            <Link href="/menu/create" className="text-white">Create Item</Link>
-                            <br/>
-                            <Link href="/users" className='text-white'>Users</Link>
+                            <Link href="/pages" className="text-dark mx-2">Posts</Link>
+                            <Link href="/menu" className="text-dark mx-2">Menu</Link>
+                            <Link href="/menu/create" className="text-dark mx-2">Create Item</Link>
+                            <Link href="/users" className="text-dark mx-2">Users</Link>
                         </div>
                     </nav>
                 </div>
@@ -25,7 +28,7 @@ const MainLayout = ({ children }) => {
             <main>
                 {children}
             </main>
-            {/* <footer className="bg-gray-800 p-4 text-white text-center">
+            {/* <footer className="bg-light p-4 text-dark text-center mt-4">
                 © 2024 MyApp
             </footer> */}
         </div>

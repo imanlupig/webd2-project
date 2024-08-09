@@ -9,7 +9,7 @@ const CommentSection = ({ pageId }) => {
         name: '',
     });
 
-    function handleSubmit(event){
+    function handleSubmit(event) {
         event.preventDefault();
         post(route('comments.store', { page: pageId }), {
             onSuccess: () => {
@@ -19,38 +19,48 @@ const CommentSection = ({ pageId }) => {
     }
 
     return (
-        <div className="comment-section">
-            <h3 className="text-xl font-semibold">Comments</h3>
-            <ul>
+        <div className="bg-light p-4 rounded shadow-sm">
+            <h3 className="text-dark mb-4">Comments</h3>
+            <ul className="list-unstyled">
                 {comments.map((comment) => (
-                    <li key={comment.id} className="border-b py-2">
+                    <li key={comment.id} className="border-bottom py-3">
                         <p>{comment.content}</p>
-                        <small>by {comment.name ? comment.name : 'Anonymous'} on {new Date(comment.created_at).toLocaleString()}</small>
+                        <small className="text-muted">
+                            by {comment.name ? comment.name : 'Anonymous'} on {new Date(comment.created_at).toLocaleString()}
+                        </small>
                     </li>
                 ))}
             </ul>
 
             <form className="mt-4" onSubmit={handleSubmit}>
-                <textarea
-                    value={data.content}
-                    onChange={(e) => setData('content', e.target.value)}
-                    className="w-full border rounded p-2"
-                    placeholder="Add a comment..."
-                />
-                <input
-                    type="text"
-                    value={data.name}
-                    onChange={(e) => setData('name', e.target.value)}
-                    placeholder="Your Name (optional)"
-                    className="w-full border rounded p-2 mt-2"
-                />
-                <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2 mt-2">
+                <div className="form-group">
+                    <textarea
+                        value={data.content}
+                        onChange={(e) => setData('content', e.target.value)}
+                        className="form-control border-dark"
+                        placeholder="Add a comment..."
+                        rows="4"
+                    />
+                </div>
+                <div className="form-group mt-2">
+                    <input
+                        type="text"
+                        value={data.name}
+                        onChange={(e) => setData('name', e.target.value)}
+                        placeholder="Your Name (optional)"
+                        className="form-control border-dark"
+                    />
+                </div>
+                <button 
+                    type="submit" 
+                    className="btn btn-dark mt-2"
+                >
                     Submit
                 </button>
             </form>
 
-            {errors.content && <p className="text-red-500">{errors.content}</p>}
-            {errors.page_id && <p className="text-red-500">{errors.page_id}</p>}
+            {errors.content && <div className="text-danger mt-2">{errors.content}</div>}
+            {errors.page_id && <div className="text-danger mt-2">{errors.page_id}</div>}
         </div>
     );
 };
