@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use HTMLPurifier;
 use HTMLPurifier_Config;
+use App\Model\Comment;
+use App\Models\Image;
 
 class PageController extends Controller
 {
@@ -33,17 +35,30 @@ class PageController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+    
         $config = HTMLPurifier_Config::createDefault();
         $purifier = new HTMLPurifier($config);
         $cleanHtml = $purifier->purify($request->input('content'));
-
-        Page::create([
+    
+        $page = Page::create([
             'title' => $request->input('title'),
             'content' => $cleanHtml,
         ]);
-
+    
+        if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
+            $filename = time() . '.' . $imageFile->getClientOriginalExtension();
+    
+            $imageFile->move(public_path('uploads/images'), $filename);
+    
+            Image::create([
+                'filename' => $filename,
+                'page_id' => $page->id,
+            ]);
+        }
+        
         return redirect()->route('pages.index');
     }
 
@@ -56,31 +71,49 @@ class PageController extends Controller
     public function show(Page $page)
     {
         $comments = $page->comments()->latest()->get();
+        $image = $page->image ? $page->image->filename : null;
     
         return Inertia::render('Pages/Show', [
             'page' => $page,
-            'comments' => $comments, 
+            'comments' => $comments,
+            'imageUrl' => $image
         ]);
     }
     
     public function update(Request $request, Page $page)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required|string',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+    ]);
 
-        $config = HTMLPurifier_Config::createDefault();
-        $purifier = new HTMLPurifier($config);
-        $cleanHtml = $purifier->purify($request->input('content'));
+    $config = HTMLPurifier_Config::createDefault();
+    $purifier = new HTMLPurifier($config);
+    $cleanHtml = $purifier->purify($request->input('content'));
 
-        $page->update([
-            'title' => $request->input('title'),
-            'content' => $cleanHtml,
-        ]);
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
 
-        return redirect()->route('pages.index');
+        if (in_array($image->getMimeType(), ['image/jpeg', 'image/png', 'image/gif'])) {
+            $path = $image->storeAs('public/uploads', $imageName);
+
+            Image::updateOrCreate(
+                ['page_id' => $page->id],
+                ['filename' => $imageName]
+            );
+        }
     }
+
+    $page->update([
+        'title' => $request->input('title'),
+        'content' => $request->input('content'),
+        'image' => $imagePath
+    ]);
+
+    return redirect()->route('pages.index');
+}
     
     public function destroy(Page $page)
     {
@@ -98,7 +131,13 @@ class PageController extends Controller
     public function guestShow(Page $page)
     {
         $comments = $page->comments()->orderBy('created_at', 'desc')->get();
-        return inertia('Guest/Pages/Show', ['page' => $page, 'comments' => $comments]);
+        $image = $page->image ? $page->image->filename : null;
+
+        return Inertia::render('Guest/Pages/Show', [
+            'page' => $page,
+            'comments' => $comments,
+            'imageUrl' => $image
+        ]);
     }
 
     public function storeComment(Request $request, Page $page)
@@ -114,3 +153,4 @@ class PageController extends Controller
     }
 
 }
+

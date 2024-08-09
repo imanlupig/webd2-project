@@ -4,21 +4,22 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePagesTable extends Migration
+class CreateCommentsTable extends Migration
 {
     public function up()
     {
-        Schema::create('pages', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->foreignId('page_id')->constrained()->onDelete('cascade');
             $table->text('content');
+            $table->string('name')->nullable();
             $table->timestamps();
-            $table->string('image')->nullable();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('pages');
+        Schema::dropIfExists('comments');
     }
 }
+

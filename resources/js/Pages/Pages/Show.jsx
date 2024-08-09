@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from '@inertiajs/react';
-import GuestLayout from '@/Layouts/GuestLayout';
 import AuthCommentSection from '@/Components/AuthCommentSection';
+import PageImage from '@/Components/PageImage';
+import MainLayout from '@/Layouts/MainLayout';
 
-const Show = ({ page, comments }) => {
+const Show = ({ page, imageUrl }) => {
     const { data, setData, post, reset, errors } = useForm({
         name: '',
         content: '',
@@ -18,14 +19,14 @@ const Show = ({ page, comments }) => {
     };
 
     return (
-        <GuestLayout>
+        <MainLayout>
             <div className="max-w-2xl mx-auto py-6 px-4">
-            <h1 className="text-3xl font-bold mb-4">{page.title}</h1>
-            <div className="prose" dangerouslySetInnerHTML={{ __html: page.content }} />
-            <AuthCommentSection/>
+                <h1 className="text-3xl font-bold mb-4">{page.title}</h1>
+                <div className="prose" dangerouslySetInnerHTML={{ __html: page.content }} />
+                <PageImage imageUrl={imageUrl} />
+                <AuthCommentSection />
             </div>
-    </GuestLayout>
-        
+        </MainLayout>
     );
 };
 

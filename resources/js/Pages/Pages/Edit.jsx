@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm, usePage } from '@inertiajs/react';
 import Quill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // import styles
+import 'react-quill/dist/quill.snow.css'; 
 
 const Edit = () => {
     const { page } = usePage().props;
@@ -20,7 +20,7 @@ const Edit = () => {
             [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
             [{size: []}],
             ['bold', 'italic', 'underline', 'strike'],
-            ['clean'] // Adding the clean button to remove formatting
+            ['clean'] 
         ],
     };
 

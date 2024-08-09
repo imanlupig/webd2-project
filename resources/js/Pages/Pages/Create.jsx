@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout'; 
 import Quill from 'react-quill';
@@ -8,13 +8,16 @@ const Create = () => {
     const { data, setData, post, errors } = useForm({
         title: '',
         content: '',
-        image: null,  // Add image to form data
+        image: null, 
     });
+
+    const [preview, setPreview] = useState(null);
 
     const handleChange = (e) => {
         const { name, type, files } = e.target;
         if (type === 'file') {
-            setData(name, files[0]);  // Update image in form data
+            setData(name, files[0]); 
+            setPreview(URL.createObjectURL(files[0]));
         } else {
             setData(name, e.target.value);
         }
@@ -22,16 +25,11 @@ const Create = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append('title', data.title);
-        formData.append('content', data.content);
-        if (data.image) {
-            formData.append('image', data.image);
-        }
-
         post(route('pages.store'), {
-            forceFormData: true,
-            data: formData,
+            data: {
+                ...data,
+                _method: 'post',
+            },
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -79,14 +77,16 @@ const Create = () => {
                         {errors.content && <span className="text-red-500 text-sm">{errors.content}</span>}
                     </div>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Image (optional)</label>
+                        <label className="block text-sm font-medium text-gray-700">Image</label>
                         <input
                             type="file"
                             name="image"
-                            accept="image/*"
                             onChange={handleChange}
-                            className="mt-1 block w-full text-gray-500"
+                            className="mt-1 block w-full"
                         />
+                        {preview && (
+                            <img src={preview} alt="Preview" className="mt-2 max-w-xs" />
+                        )}
                         {errors.image && <span className="text-red-500 text-sm">{errors.image}</span>}
                     </div>
                     <button

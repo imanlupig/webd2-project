@@ -12,12 +12,14 @@ class CommentController extends Controller
     {
         $request->validate([
             'content' => 'required|string|max:5000',
+            'name' => 'nullable|string|max:255',
         ]);
-
+    
         $page->comments()->create([
             'content' => $request->input('content'),
+            'name' => $request->input('name', 'Anonymous')
         ]);
-
+    
         return redirect()->back();
     }
 

@@ -8,7 +8,7 @@ const MainLayout = ({ children }) => {
                 <div className="container mx-auto">
                     <nav className="flex justify-between items-center">
                         <div>
-                            <Link href="/" className="text-white text-xl font-semibold">Kape Admin</Link>
+                            <Link href="/dashboard" className="text-white text-xl font-semibold">Kape Admin</Link>
                         </div>
                         <div>
                             <Link href="/pages" className="text-white">Posts</Link>
@@ -17,8 +17,6 @@ const MainLayout = ({ children }) => {
                             <br/>
                             <Link href="/menu/create" className="text-white">Create Item</Link>
                         </div>
-                            
-
                     </nav>
                 </div>
             </header>

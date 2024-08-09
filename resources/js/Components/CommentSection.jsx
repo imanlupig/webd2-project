@@ -3,7 +3,7 @@ import { useForm, usePage } from '@inertiajs/react';
 
 const CommentSection = ({ pageId }) => {
     const { comments } = usePage().props;
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, reset, errors } = useForm({
         page_id: pageId,
         content: '',
         name: '',
@@ -11,7 +11,11 @@ const CommentSection = ({ pageId }) => {
 
     function handleSubmit(event){
         event.preventDefault();
-        post(route('comments.store',  { page: pageId }));
+        post(route('comments.store', { page: pageId }), {
+            onSuccess: () => {
+                reset();
+            },
+        });
     }
 
     return (
@@ -21,17 +25,17 @@ const CommentSection = ({ pageId }) => {
                 {comments.map((comment) => (
                     <li key={comment.id} className="border-b py-2">
                         <p>{comment.content}</p>
-                        <small>by {comment.name} on {new Date(comment.created_at).toLocaleString()}</small>
+                        <small>by {comment.name ? comment.name : 'Anonymous'} on {new Date(comment.created_at).toLocaleString()}</small>
                     </li>
                 ))}
             </ul>
 
-            <form onSubmit={handleSubmit} className="mt-4">
+            <form className="mt-4" onSubmit={handleSubmit}>
                 <textarea
                     value={data.content}
                     onChange={(e) => setData('content', e.target.value)}
                     className="w-full border rounded p-2"
-                    placeholder="Add your comment..."
+                    placeholder="Add a comment..."
                 />
                 <input
                     type="text"
@@ -40,7 +44,7 @@ const CommentSection = ({ pageId }) => {
                     placeholder="Your Name (optional)"
                     className="w-full border rounded p-2 mt-2"
                 />
-                <button onClick={handleSubmit} className="bg-blue-500 text-white rounded px-4 py-2 mt-2">
+                <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2 mt-2">
                     Submit
                 </button>
             </form>
