@@ -38,7 +38,7 @@ const Create = () => {
 
     const modules = {
         toolbar: [
-            [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+            [{ 'font': [] }],
             [{size: []}],
             ['bold', 'italic', 'underline', 'strike'],
             ['clean']

@@ -16,6 +16,8 @@ const MainLayout = ({ children }) => {
                             <Link href="/menu" className="text-white">Menu</Link>
                             <br/>
                             <Link href="/menu/create" className="text-white">Create Item</Link>
+                            <br/>
+                            <Link href="/users" className='text-white'>Users</Link>
                         </div>
                     </nav>
                 </div>

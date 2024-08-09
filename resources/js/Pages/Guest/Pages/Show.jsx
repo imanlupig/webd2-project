@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
-import { useForm } from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import CommentSection from '@/Components/CommentSection';
 import PageImage from '@/Components/PageImage';
 
-const Show = ({ page, comments, imageUrl }) => {
-    const { data, setData, post, reset, errors } = useForm({
-        name: '',
-        content: '',
-    });
+const Show = ({ page, imageUrl }) => {
 
     return (
         <GuestLayout>
@@ -19,7 +14,6 @@ const Show = ({ page, comments, imageUrl }) => {
             <CommentSection pageId={page.id}/>
             </div>
         </GuestLayout>
-        
     );
 };
 

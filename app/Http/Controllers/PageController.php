@@ -65,6 +65,7 @@ class PageController extends Controller
     public function edit($id)
     {
         $page = Page::findOrFail($id);
+        $page = Page::with('image')->findOrFail($id);
         return Inertia::render('Pages/Edit', ['page' => $page]);
     }
 
@@ -81,39 +82,46 @@ class PageController extends Controller
     }
     
     public function update(Request $request, Page $page)
-{
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'content' => 'required|string',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-    ]);
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
 
-    $config = HTMLPurifier_Config::createDefault();
-    $purifier = new HTMLPurifier($config);
-    $cleanHtml = $purifier->purify($request->input('content'));
+        $cleanHtml = (new HTMLPurifier(HTMLPurifier_Config::createDefault()))->purify($request->input('content'));
 
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        // Update Page
+        $page->update([
+            'title' => $request->input('title'),
+            'content' => $cleanHtml,
+        ]);
 
-        if (in_array($image->getMimeType(), ['image/jpeg', 'image/png', 'image/gif'])) {
-            $path = $image->storeAs('public/uploads', $imageName);
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($page->image) {
+                $oldFilePath = public_path('uploads/images/' . $page->image->filename);
+                if (file_exists($oldFilePath)) {
+                    unlink($oldFilePath);
+                }
+                $page->image->delete();
+            }
 
-            Image::updateOrCreate(
-                ['page_id' => $page->id],
-                ['filename' => $imageName]
-            );
+            // Save new image
+            $imageFile = $request->file('image');
+            $filename = time() . '.' . $imageFile->getClientOriginalExtension();
+            $imageFile->move(public_path('uploads/images'), $filename);
+
+            Image::create([
+                'filename' => $filename,
+                'page_id' => $page->id,
+            ]);
         }
+
+        return redirect()->route('pages.index')->with('success', 'Page updated successfully.');
     }
 
-    $page->update([
-        'title' => $request->input('title'),
-        'content' => $request->input('content'),
-        'image' => $imagePath
-    ]);
-
-    return redirect()->route('pages.index');
-}
     
     public function destroy(Page $page)
     {
@@ -152,5 +160,22 @@ class PageController extends Controller
         return redirect()->route('guest.pages.show', $page);
     }
 
+    public function deleteImage(Request $request, Page $page)
+    {
+        $image = Image::where('page_id', $page->id)->first();
+
+        if ($image) {
+            $filePath = public_path('uploads/images/' . $image->filename);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+
+            $image->delete();
+        }
+
+        return redirect()->route('pages.edit', $page->id)->with('success', 'Image deleted successfully.');
+    }
+
 }
+
 

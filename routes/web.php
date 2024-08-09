@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,15 +47,17 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::resource('pages', PageController::class);
+    Route::put('/pages/{page}', [PageController::class, 'update'])->name('pages.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    Route::delete('/pages/{page}/delete-image', [PageController::class, 'deleteImage'])->name('pages.deleteImage');
 });
 
 Route::get('/', [PageController::class, 'guestIndex'])->name('guest.pages.index');
 Route::get('/guest/pages/{page}', [PageController::class, 'guestShow'])->name('guest.pages.show');
 Route::post('/pages/{page}/comments', [CommentController::class, 'store'])->name('comments.store');
 
-
-
-
+Route::middleware('auth')->group(function () {
+    Route::resource('users', UserController::class)->except(['show']);
+});
 
 require __DIR__.'/auth.php';

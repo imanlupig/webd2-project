@@ -1,22 +1,9 @@
 import React from 'react';
-import { useForm } from '@inertiajs/react';
 import AuthCommentSection from '@/Components/AuthCommentSection';
 import PageImage from '@/Components/PageImage';
 import MainLayout from '@/Layouts/MainLayout';
 
 const Show = ({ page, imageUrl }) => {
-    const { data, setData, post, reset, errors } = useForm({
-        name: '',
-        content: '',
-    });
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        post(route('comments.store', page.id), {
-            preserveScroll: true,
-            onSuccess: () => reset(),
-        });
-    };
 
     return (
         <MainLayout>
