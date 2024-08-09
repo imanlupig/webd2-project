@@ -15,4 +15,5 @@ class Page extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
 }

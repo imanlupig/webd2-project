@@ -1,19 +1,31 @@
-import React from 'react';
-import { usePage } from '@inertiajs/react';
-import MainLayout from '@/Layouts/MainLayout';
-import { Link } from '@inertiajs/react';
+import React, { useState } from 'react';
+import { useForm } from '@inertiajs/react';
+import GuestLayout from '@/Layouts/GuestLayout';
+import AuthCommentSection from '@/Components/AuthCommentSection';
 
+const Show = ({ page, comments }) => {
+    const { data, setData, post, reset, errors } = useForm({
+        name: '',
+        content: '',
+    });
 
-const Show = () => {
-    const { page } = usePage().props;
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        post(route('comments.store', page.id), {
+            preserveScroll: true,
+            onSuccess: () => reset(),
+        });
+    };
 
     return (
-        <MainLayout>
-            <div className="max-w-4xl mx-auto py-10">
-                <h1 className="text-2xl font-bold mb-6">{page.title}</h1>
-                <div dangerouslySetInnerHTML={{ __html: page.content }}></div>
+        <GuestLayout>
+            <div className="max-w-2xl mx-auto py-6 px-4">
+            <h1 className="text-3xl font-bold mb-4">{page.title}</h1>
+            <div className="prose" dangerouslySetInnerHTML={{ __html: page.content }} />
+            <AuthCommentSection/>
             </div>
-        </MainLayout>
+    </GuestLayout>
+        
     );
 };
 

@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class Image extends Model
 {
-    protected $fillable = ['content', 'user_id', 'page_id'];
+    protected $fillable = ['filename', 'page_id'];
 
     public function page()
     {

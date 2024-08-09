@@ -46,11 +46,14 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::resource('pages', PageController::class);
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
 
 Route::get('/', [PageController::class, 'guestIndex'])->name('guest.pages.index');
 Route::get('/guest/pages/{page}', [PageController::class, 'guestShow'])->name('guest.pages.show');
 Route::post('/pages/{page}/comments', [CommentController::class, 'store'])->name('comments.store');
+
+
 
 
 

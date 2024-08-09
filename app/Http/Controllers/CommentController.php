@@ -11,12 +11,23 @@ class CommentController extends Controller
     public function store(Request $request, Page $page)
     {
         $request->validate([
-            'name' => 'nullable|string|max:255',
-            'content' => 'required|string',
+            'content' => 'required|string|max:5000',
         ]);
 
-        $page->comments()->create($request->only('name', 'content'));
+        $page->comments()->create([
+            'content' => $request->input('content'),
+        ]);
 
-        return redirect()->route('guest.pages.show', $page->id)->with('success', 'Comment added successfully!');
+        return redirect()->back();
+    }
+
+    public function destroy(Comment $comment)
+    {
+        if (auth()->check()) {
+            $comment->delete();
+            return redirect()->back()->with('message', 'Comment deleted successfully.');
+        }
+    
+        return redirect()->back()->with('error', 'Unauthorized action.');
     }
 }

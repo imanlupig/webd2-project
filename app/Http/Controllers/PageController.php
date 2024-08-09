@@ -55,8 +55,11 @@ class PageController extends Controller
 
     public function show(Page $page)
     {
+        $comments = $page->comments()->latest()->get();
+    
         return Inertia::render('Pages/Show', [
             'page' => $page,
+            'comments' => $comments, 
         ]);
     }
     
