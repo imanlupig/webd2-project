@@ -1,23 +1,23 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use HTMLPurifier;
 use HTMLPurifier_Config;
-use App\Model\Comment;
-use App\Models\Image;
 
 class PageController extends Controller
 {
     public function index(Request $request)
     {
-        $sortBy = $request->input('sort', 'created_at'); 
-        $sortOrder = $request->input('order', 'desc');  
-    
+        $sortBy = $request->input('sort', 'created_at');
+        $sortOrder = $request->input('order', 'desc');
+
         $pages = Page::orderBy($sortBy, $sortOrder)->get();
-    
+
         return Inertia::render('Pages/Index', [
             'pages' => $pages,
             'currentSort' => $sortBy,
@@ -37,34 +37,33 @@ class PageController extends Controller
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
         $config = HTMLPurifier_Config::createDefault();
         $purifier = new HTMLPurifier($config);
         $cleanHtml = $purifier->purify($request->input('content'));
-    
+
         $page = Page::create([
-            'title' => $request->input('title'),
+            'title' => htmlspecialchars($request->input('title'), ENT_QUOTES, 'UTF-8'),
             'content' => $cleanHtml,
         ]);
-    
+
         if ($request->hasFile('image')) {
             $imageFile = $request->file('image');
             $filename = time() . '.' . $imageFile->getClientOriginalExtension();
-    
+
             $imageFile->move(public_path('uploads/images'), $filename);
-    
+
             Image::create([
-                'filename' => $filename,
+                'filename' => htmlspecialchars($filename, ENT_QUOTES, 'UTF-8'),
                 'page_id' => $page->id,
             ]);
         }
-        
-        return redirect()->route('pages.index');
+
+        return redirect()->route('pages.index')->with('success', 'Page created successfully.');
     }
 
     public function edit($id)
     {
-        $page = Page::findOrFail($id);
         $page = Page::with('image')->findOrFail($id);
         return Inertia::render('Pages/Edit', ['page' => $page]);
     }
@@ -73,14 +72,14 @@ class PageController extends Controller
     {
         $comments = $page->comments()->latest()->get();
         $image = $page->image ? $page->image->filename : null;
-    
+
         return Inertia::render('Pages/Show', [
             'page' => $page,
             'comments' => $comments,
             'imageUrl' => $image
         ]);
     }
-    
+
     public function update(Request $request, Page $page)
     {
         $request->validate([
@@ -91,15 +90,12 @@ class PageController extends Controller
 
         $cleanHtml = (new HTMLPurifier(HTMLPurifier_Config::createDefault()))->purify($request->input('content'));
 
-        // Update Page
         $page->update([
-            'title' => $request->input('title'),
+            'title' => htmlspecialchars($request->input('title'), ENT_QUOTES, 'UTF-8'),
             'content' => $cleanHtml,
         ]);
 
-        // Handle image upload
         if ($request->hasFile('image')) {
-            // Delete old image if exists
             if ($page->image) {
                 $oldFilePath = public_path('uploads/images/' . $page->image->filename);
                 if (file_exists($oldFilePath)) {
@@ -108,13 +104,12 @@ class PageController extends Controller
                 $page->image->delete();
             }
 
-            // Save new image
             $imageFile = $request->file('image');
             $filename = time() . '.' . $imageFile->getClientOriginalExtension();
             $imageFile->move(public_path('uploads/images'), $filename);
 
             Image::create([
-                'filename' => $filename,
+                'filename' => htmlspecialchars($filename, ENT_QUOTES, 'UTF-8'),
                 'page_id' => $page->id,
             ]);
         }
@@ -122,9 +117,16 @@ class PageController extends Controller
         return redirect()->route('pages.index')->with('success', 'Page updated successfully.');
     }
 
-    
     public function destroy(Page $page)
     {
+        if ($page->image) {
+            $filePath = public_path('uploads/images/' . $page->image->filename);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+            $page->image->delete();
+        }
+
         $page->delete();
 
         return redirect()->route('pages.index')->with('success', 'Page deleted successfully.');
@@ -133,7 +135,7 @@ class PageController extends Controller
     public function guestIndex()
     {
         $pages = Page::all();
-        return inertia('Guest/Pages/Index', ['pages' => $pages]);
+        return Inertia::render('Guest/Pages/Index', ['pages' => $pages]);
     }
 
     public function guestShow(Page $page)
@@ -155,7 +157,14 @@ class PageController extends Controller
             'content' => 'required|string',
         ]);
 
-        $page->comments()->create($validated);
+        $config = HTMLPurifier_Config::createDefault();
+        $purifier = new HTMLPurifier($config);
+        $cleanContent = $purifier->purify($validated['content']);
+
+        $page->comments()->create([
+            'name' => htmlspecialchars($validated['name'] ?? 'Anonymous', ENT_QUOTES, 'UTF-8'),
+            'content' => $cleanContent,
+        ]);
 
         return redirect()->route('guest.pages.show', $page);
     }
@@ -175,7 +184,4 @@ class PageController extends Controller
 
         return redirect()->route('pages.edit', $page->id)->with('success', 'Image deleted successfully.');
     }
-
 }
-
-
